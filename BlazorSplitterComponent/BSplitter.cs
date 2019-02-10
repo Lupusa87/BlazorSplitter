@@ -27,8 +27,6 @@ namespace BlazorSplitterComponent
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
-
         public void InvokePropertyChanged()
         {
             PropertyChanged?.Invoke(this, null);
