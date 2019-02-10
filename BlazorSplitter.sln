@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28531.58
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSplitter", "BlazorSplitter\BlazorSplitter.csproj", "{BDF63A80-C38E-490B-A760-B93FC2983AF4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSplitterComponent", "BlazorSplitterComponent\BlazorSplitterComponent.csproj", "{3ACA5C7A-E26F-4CD9-8335-FFC24D22483E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDF63A80-C38E-490B-A760-B93FC2983AF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF63A80-C38E-490B-A760-B93FC2983AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF63A80-C38E-490B-A760-B93FC2983AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF63A80-C38E-490B-A760-B93FC2983AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ACA5C7A-E26F-4CD9-8335-FFC24D22483E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ACA5C7A-E26F-4CD9-8335-FFC24D22483E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ACA5C7A-E26F-4CD9-8335-FFC24D22483E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ACA5C7A-E26F-4CD9-8335-FFC24D22483E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5F72381-D8AF-406D-B85B-269A321416EF}
+	EndGlobalSection
+EndGlobal

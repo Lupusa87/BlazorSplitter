@@ -1,0 +1,46 @@
+﻿@page "/"
+
+@inherits Index_Logic
+
+@addTagHelper *, BlazorSplitterComponent
+@using BlazorSplitterComponent;
+
+
+<h3 style="color:darkred">This is blazor Splitter prototype</h3>
+
+<br />
+
+<h4>Try to resize colums</h4>
+
+
+
+<table style="table-layout:fixed;width:300px;margin-left:100px;margin-top:50px">
+    <thead>
+        <tr>
+            <th style="width:150px;height:40px;background-color:lightgray">
+                <div style="display:flex;flex-direction:row;width:100%;line-height:40px">
+                    <span style="width:140px;height:40px;text-align:center">Column 1</span>
+                    <CompBlazorSplitter ref="@CompBlazorSplitter1" bsSettings="@bsSettings1"></CompBlazorSplitter>
+                </div>
+            </th>
+            <th style="width:150px;height:40px;background-color:lightgreen">
+                <div style="display:flex;flex-direction:row;width:100%;line-height:40px">
+                    <span style="width:140px;height:40px;text-align:center"> Column 2</span>
+                    <CompBlazorSplitter ref="@CompBlazorSplitter2" bsSettings="@bsSettings2"></CompBlazorSplitter>
+                </div>
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td valign="top" style="margin:30px;width:150px;height:40px">
+                @P1
+            </td>
+            <td valign="top" style="margin:30px;width:150px;height:40px">
+                @P2
+            </td>
+
+        </tr>
+        </tbody>
+</table>
