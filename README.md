@@ -1,3 +1,5 @@
 # Blazor Splitter
 
-Doing nothing yet, under development
+This is blazor Splitter prototype.
+
+demo - https://lupblazorsplitter.z20.web.core.windows.net/
