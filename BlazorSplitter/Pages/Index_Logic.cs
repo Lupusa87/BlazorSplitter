@@ -9,58 +9,131 @@ namespace BlazorSplitter.Pages
 {
     public class Index_Logic:ComponentBase
     {
-        public CompBlazorSplitter CompBlazorSplitter1;
-        public CompBlazorSplitter CompBlazorSplitter2;
 
-        public int P1 = 0;
-        public int P2 = 0;
+        bool FirtsLoad = true;
 
-        public BsSettings bsSettings1 { get; set; } = new BsSettings();
+        public List<CompBlazorSplitter> CompBlazorSplitters_List_Cols = new List<CompBlazorSplitter>();
 
-        public BsSettings bsSettings2 { get; set; } = new BsSettings();
+        public List<CompBlazorSplitter> CompBlazorSplitters_List_Rows = new List<CompBlazorSplitter>();
+
+        public List<BsSettings> bsSettings_List_Cols { get; set; } = new List<BsSettings>();
+
+
+        public List<BsSettings> bsSettings_List_Rows { get; set; } = new List<BsSettings>();
+
+     
+        public List<int> Width_list_Cols = new List<int>();
+        public List<int> Height_list_Rows = new List<int>();
+
+
+
+        public int Col_Min_width = 50;
+        public int Col_Max_width = 300;
+
+        public int Row_Min_height = 20;
+        public int Row_Max_height = 100;
+
+
+        public string[,] Values_Matrix = new string[5, 5];
 
         protected override void OnInit()
         {
-
-            bsSettings1 = new BsSettings
+            for (int i = 0; i < 6; i++)
             {
-                width = 8,
-                height = 40,
-                BgColor = "lightgray",
-            };
+                CompBlazorSplitters_List_Cols.Add(new CompBlazorSplitter());
+                Width_list_Cols.Add(100);
 
-            bsSettings2 = new BsSettings
+                CompBlazorSplitters_List_Rows.Add(new CompBlazorSplitter());
+                Height_list_Rows.Add(30);
+            }
+
+
+
+            for (int i = 0; i < Values_Matrix.GetLength(0); i++)
             {
-                width = 8,
-                height = 40,
-                BgColor = "lightgreen",
-            };
+                for (int j = 0; j < Values_Matrix.GetLength(1); j++)
+                {
+                    Values_Matrix[i, j] = Guid.NewGuid().ToString("d").Substring(1, 4);
+                }
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                bsSettings_List_Cols.Add(new BsSettings
+                {
+                    index = bsSettings_List_Cols.Count,
+                    width = 5,
+                    height = 40,
+                    BgColor = "#bfbfbf",
+                });
 
 
+                bsSettings_List_Rows.Add(new BsSettings
+                {
+                    VerticalOrHorizontal = true,
+                    index = bsSettings_List_Rows.Count,
+                    width = 30,
+                    height = 5,
+                    BgColor = "#b3ffb3",
+                });
+            }
+                       
 
             base.OnInit();
         }
 
 
-        protected override void OnAfterRender()
+        public void OnPositionChange(bool b, int index, int p)
         {
-            CompBlazorSplitter1.OnPositionChange += OnPositionChange1;
-            CompBlazorSplitter2.OnPositionChange += OnPositionChange2;
+  
+            if (b)
+            {
+            
+                int old_Value_row = Height_list_Rows[index];
 
-            base.OnAfterRender();
+                Height_list_Rows[index] += p;
+
+
+                if (Height_list_Rows[index] + p < Row_Min_height)
+                {
+                    Height_list_Rows[index] = Row_Min_height;
+                }
+                if (Height_list_Rows[index] > Row_Max_height)
+                {
+                    Height_list_Rows[index] = Row_Max_height;
+                }
+
+
+                if (Height_list_Rows[index] != old_Value_row)
+                {
+                    StateHasChanged();
+                }
+            }
+            else
+            {
+                int old_Value_col = Width_list_Cols[index];
+
+                Width_list_Cols[index] += p;
+
+
+                if (Width_list_Cols[index] + p < Col_Min_width)
+                {
+                    Width_list_Cols[index] = Col_Min_width;
+                }
+                if (Width_list_Cols[index] > Col_Max_width)
+                {
+                    Width_list_Cols[index] = Col_Max_width;
+                }
+
+
+                if (Width_list_Cols[index] != old_Value_col)
+                {
+                    StateHasChanged();
+                }
+            }
+            
         }
 
-
-        private void OnPositionChange1(int p)
-        {
-            P1 = p;
-            StateHasChanged();
-        }
-
-        private void OnPositionChange2(int p)
-        {
-            P2 = p;
-            StateHasChanged();
-        }
+       
     }
 }

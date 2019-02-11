@@ -10,37 +10,47 @@
 
 <br />
 
-<h4>Try to resize colums</h4>
+<h4>Try to resize colums/rows</h4>
 
 
 
-<table style="table-layout:fixed;width:300px;margin-left:100px;margin-top:50px">
+<table style=@("border: 1px solid black;margin-left:100px;margin-top:50px")>
     <thead>
         <tr>
-            <th style="width:150px;height:40px;background-color:lightgray">
-                <div style="display:flex;flex-direction:row;width:100%;line-height:40px">
-                    <span style="width:140px;height:40px;text-align:center">Column 1</span>
-                    <CompBlazorSplitter ref="@CompBlazorSplitter1" bsSettings="@bsSettings1"></CompBlazorSplitter>
-                </div>
+            <th style=@("border: 1px solid black;width:30px;height:40px;background-color:"+bsSettings_List_Cols[0].BgColor)>
+
             </th>
-            <th style="width:150px;height:40px;background-color:lightgreen">
-                <div style="display:flex;flex-direction:row;width:100%;line-height:40px">
-                    <span style="width:140px;height:40px;text-align:center"> Column 2</span>
-                    <CompBlazorSplitter ref="@CompBlazorSplitter2" bsSettings="@bsSettings2"></CompBlazorSplitter>
-                </div>
-            </th>
-            
+            @for (int i = 0; i < CompBlazorSplitters_List_Cols.Count - 1; i++)
+            {
+                <th style=@("border: 1px solid black;height:40px;background-color:"+ bsSettings_List_Cols[i].BgColor)>
+                    <div style="display:flex;flex-direction:row;line-height:40px">
+                        <span style=@("color:blue;width:"+(Width_list_Cols[i]-5)+"px;height:40px;text-align:center")>Col @(i + 1)</span>
+                        <CompBlazorSplitter ref="@CompBlazorSplitters_List_Cols[i]" OnPositionChange="@OnPositionChange" bsSettings="@bsSettings_List_Cols[i]"></CompBlazorSplitter>
+                    </div>
+                </th>
+            }
+
+
         </tr>
     </thead>
     <tbody>
+        @for (int g = 0; g < 5; g++)
+        {
         <tr>
-            <td valign="top" style="margin:30px;width:150px;height:40px">
-                @P1
+            <td valign="top" align="center" style=@("width:30px;border: 1px solid black;background-color:"+bsSettings_List_Rows[0].BgColor)>
+                <div style=@("height:"+Height_list_Rows[g] +"px; overflow:hidden;")>
+                    <span style=@("color:blue;width:30px:display:inline-block;line-height:"+(Height_list_Rows[g]-5)+"px;text-align:center")>@(g + 1)</span>
+                    <CompBlazorSplitter ref="@CompBlazorSplitters_List_Rows[g]" OnPositionChange="@OnPositionChange" bsSettings="@bsSettings_List_Rows[g]"></CompBlazorSplitter>
+                </div>
             </td>
-            <td valign="top" style="margin:30px;width:150px;height:40px">
-                @P2
-            </td>
-
+            @for (int k = 0; k < CompBlazorSplitters_List_Cols.Count - 1; k++)
+            {
+                <td valign="middle" align="center" style=@("border: 1px solid black;background-color:"+ bsSettings_List_Rows[k].BgColor)>
+                    @Values_Matrix[g, k]
+                </td>
+            }
         </tr>
-        </tbody>
+        }
+
+    </tbody>
 </table>
