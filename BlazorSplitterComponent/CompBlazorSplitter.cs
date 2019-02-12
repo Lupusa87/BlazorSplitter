@@ -23,7 +23,7 @@ namespace BlazorSplitterComponent
 
       
 
-    bool FirtLoad = true;
+        bool FirtLoad = true;
 
         protected override void OnInit()
         {
@@ -155,5 +155,12 @@ namespace BlazorSplitterComponent
             bSplitter.PropertyChanged -= BSplitter_PropertyChanged;
         }
 
+
+
+        public void SetColor(string c)
+        {
+            bSplitter.bsbSettings.BgColor = c;
+            StateHasChanged();
+        }
     }
 }
