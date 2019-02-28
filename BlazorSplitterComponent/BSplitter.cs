@@ -6,31 +6,32 @@ using System.Text;
 
 namespace BlazorSplitterComponent
 {
-    public class BSplitter : INotifyPropertyChanged
+    internal class BSplitter
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        internal Action PropertyChanged;
 
-        public string ID { get; set; } = "BSplitter" + Guid.NewGuid().ToString("d").Substring(1, 4);
-
-        public BsSettings bsbSettings { get; set; }
+        internal BsSettings bsbSettings { get; set; }
 
 
-        public int PreviousPosition { get; set; } = 0;
-        public int PreviousPosition2 { get; set; } = 0;
+        internal int PreviousPosition { get; set; } = 0;
+        internal int PreviousPosition2 { get; set; } = 0;
         
-        public int Position { get; set; } = 0;
+        internal int Position { get; set; } = 0;
 
-        public int Step { get; set; } = 0;
+        internal int Step { get; set; } = 0;
 
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+
+
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
+
+        internal void InvokePropertyChanged()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void InvokePropertyChanged()
-        {
-            PropertyChanged?.Invoke(this, null);
+            PropertyChanged?.Invoke();
         }
 
     }

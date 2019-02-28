@@ -6,29 +6,29 @@ using System.Threading.Tasks;
 
 namespace BlazorSplitterComponent
 {
-    public static class BsJsInterop
+    internal static class BsJsInterop
     {
-        public static Task<bool> Alert(string msg)
+        internal static Task<bool> Alert(string msg)
         {
 
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsJsFunctions.alertmsg", msg);
         }
-        public static Task<bool> HandleDrag(string elementID, DotNetObjectRef dotnetHelper)
+        internal static Task<bool> HandleDrag(string elementID, DotNetObjectRef dotnetHelper)
         {
 
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsJsFunctions.handleDrag", elementID, dotnetHelper);
         }
 
-        public static Task<bool> UnHandleDrag(string elementID)
+        internal static Task<bool> UnHandleDrag(string elementID)
         {
 
             return JSRuntime.Current.InvokeAsync<bool>(
                 "BsJsFunctions.unHandleDrag", elementID);
         }
 
-        public static Task<bool> StopDrag(string elementID)
+        internal static Task<bool> StopDrag(string elementID)
         {
 
             return JSRuntime.Current.InvokeAsync<bool>(

@@ -10,7 +10,6 @@ namespace BlazorSplitter.Pages
     public class Index_Logic:ComponentBase
     {
 
-        bool FirtsLoad = true;
 
         public List<CompBlazorSplitter> CompBlazorSplitters_List_Cols = new List<CompBlazorSplitter>();
 
@@ -59,7 +58,7 @@ namespace BlazorSplitter.Pages
 
             for (int i = 0; i < 5; i++)
             {
-                bsSettings_List_Cols.Add(new BsSettings
+                bsSettings_List_Cols.Add(new BsSettings("VerticalScroll"+i)
                 {
                     index = bsSettings_List_Cols.Count,
                     width = 5,
@@ -68,7 +67,7 @@ namespace BlazorSplitter.Pages
                 });
 
 
-                bsSettings_List_Rows.Add(new BsSettings
+                bsSettings_List_Rows.Add(new BsSettings("HorizontalScroll"+1)
                 {
                     VerticalOrHorizontal = true,
                     index = bsSettings_List_Rows.Count,

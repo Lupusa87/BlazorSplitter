@@ -79,7 +79,7 @@ window.BsJsFunctions = {
             return false;
         }
 
-    },
+    }
     //setPCapture: function (el, p) {
 
     //    if (document.getElementById(el) !== null) {

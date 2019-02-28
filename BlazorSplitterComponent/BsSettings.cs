@@ -8,6 +8,7 @@ namespace BlazorSplitterComponent
     {
         public int index { get; set; }
 
+        public string ID { get; private set; }
 
         public bool VerticalOrHorizontal { get; set; } = false;
 
@@ -18,7 +19,19 @@ namespace BlazorSplitterComponent
         public string BgColor { get; set; } = "silver";
 
 
-        public string GetStyle()
+        public BsSettings(string ScrollBarID = "Splitter")
+        {
+            if (string.IsNullOrEmpty(ScrollBarID))
+            {
+                ID = ScrollBarID + Guid.NewGuid().ToString("d").Substring(1, 4);
+            }
+            else
+            {
+                ID = "Splitter" + Guid.NewGuid().ToString("d").Substring(1, 4);
+            }
+        }
+
+        internal string GetStyle()
         {
 
             StringBuilder sb1 = new StringBuilder();

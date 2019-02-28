@@ -14,22 +14,22 @@ namespace BlazorSplitterComponent
         [Parameter]
         protected BsSettings bsSettings { get; set; }
 
-
-        public BSplitter bSplitter { get; set; } = new BSplitter();
-
         [Parameter]
         public Action<bool, int, int> OnPositionChange { get; set; }
 
 
-      
+        private BSplitter bSplitter { get; set; } = new BSplitter();
 
+       
         bool FirtLoad = true;
 
         protected override void OnInit()
         {
             bSplitter.bsbSettings = bsSettings;
+            
 
-            bSplitter.PropertyChanged += BSplitter_PropertyChanged;
+
+            bSplitter.PropertyChanged = BSplitter_PropertyChanged;
 
             base.OnInit();
         }
@@ -42,7 +42,7 @@ namespace BlazorSplitterComponent
             {
 
                 FirtLoad = false;
-                BsJsInterop.HandleDrag(bSplitter.ID, new DotNetObjectRef(this));
+                BsJsInterop.HandleDrag(bSplitter.bsbSettings.ID, new DotNetObjectRef(this));
             }
 
 
@@ -50,7 +50,7 @@ namespace BlazorSplitterComponent
         }
 
 
-        private void BSplitter_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void BSplitter_PropertyChanged()
         {
             StateHasChanged();
         }
@@ -59,7 +59,7 @@ namespace BlazorSplitterComponent
         {
             int k = 0;
             builder.OpenElement(k++, "div");
-            builder.AddAttribute(k++, "id", bSplitter.ID);
+            builder.AddAttribute(k++, "id", bSplitter.bsbSettings.ID);
             builder.AddAttribute(k++, "style", bSplitter.bsbSettings.GetStyle());
            // builder.AddAttribute(k++, "onmousedown", OnMouseDown);
            // builder.AddAttribute(k++, "onmousemove", OnMouseMove);
@@ -128,7 +128,7 @@ namespace BlazorSplitterComponent
             }
             else
             {
-                BsJsInterop.StopDrag(bSplitter.ID);
+                BsJsInterop.StopDrag(bSplitter.bsbSettings.ID);
             }
         }
 
@@ -152,7 +152,7 @@ namespace BlazorSplitterComponent
 
         public void Dispose()
         {
-            bSplitter.PropertyChanged -= BSplitter_PropertyChanged;
+            BsJsInterop.UnHandleDrag(bSplitter.bsbSettings.ID);
         }
 
 
