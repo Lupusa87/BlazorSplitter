@@ -23,36 +23,17 @@ namespace BlazorSplitterComponent
 
         private BSplitter bSplitter { get; set; } = new BSplitter();
 
-       
-        bool FirtLoad = true;
+        private bool DragMode = false;
 
         protected override void OnInit()
         {
-
-            BsJsInterop.jsRuntime = jsRuntimeCurrent;
-
             bSplitter.bsbSettings = bsSettings;
-            
-
 
             bSplitter.PropertyChanged = BSplitter_PropertyChanged;
 
+            DragMode = false;
+
             base.OnInit();
-        }
-
-
-        protected override void OnAfterRender()
-        {
-           
-            if (FirtLoad)
-            {
-
-                FirtLoad = false;
-                BsJsInterop.HandleDrag(bSplitter.bsbSettings.ID, new DotNetObjectRef(this));
-            }
-
-
-            base.OnAfterRender();
         }
 
 
@@ -67,8 +48,13 @@ namespace BlazorSplitterComponent
             builder.OpenElement(k++, "div");
             builder.AddAttribute(k++, "id", bSplitter.bsbSettings.ID);
             builder.AddAttribute(k++, "style", bSplitter.bsbSettings.GetStyle());
-           // builder.AddAttribute(k++, "onmousedown", OnMouseDown);
-           // builder.AddAttribute(k++, "onmousemove", OnMouseMove);
+
+            builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
+            builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
+            builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
+
+            builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
+
 
             builder.CloseElement();
 
@@ -76,92 +62,81 @@ namespace BlazorSplitterComponent
         }
 
 
-        //public void OnMouseMove(UIMouseEventArgs e)
-        //{
-        //    if (e.Buttons == 1)
-        //    {
-        //        int NewPosition= (int)e.ClientX;
-
-        //        if (bSplitter.PreviousPosition != NewPosition)
-        //        {
-        //            OnPositionChange?.Invoke(NewPosition - bSplitter.PreviousPosition);
-        //            bSplitter.PreviousPosition = NewPosition;
-        //        }
-
-        //    }
-        //}
-
-
-        //public void OnMouseDown(UIMouseEventArgs e)
-        //{
-        //    bSplitter.PreviousPosition = (int)e.ClientX;
-        //}
-
-
-
-
-
-        [JSInvokable]
-        public void InvokeMoveFromJS(int x, int y)
+        private void OnPointerDown(UIPointerEventArgs e)
         {
-
-
-            int NewPosition = 0;
-            int NewPosition2 = 0;
+            BsJsInterop.SetPointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
+            DragMode = true;
 
             if (bsSettings.VerticalOrHorizontal)
             {
-                NewPosition = y;
-                NewPosition2 = x;
+                bSplitter.PreviousPosition = (int)e.ClientY;
+                bSplitter.PreviousPosition2 = (int)e.ClientX;
             }
             else
             {
-                NewPosition = x;
-                NewPosition2 = y;
-            }
 
-
-                if (Math.Abs(bSplitter.PreviousPosition2 - NewPosition2) < 100)
-            {
-                if (bSplitter.PreviousPosition != NewPosition)
-                {
-                   
-                    OnPositionChange?.Invoke(bsSettings.VerticalOrHorizontal, bsSettings.index, NewPosition - bSplitter.PreviousPosition);
-                   
-                   
-                    bSplitter.PreviousPosition = NewPosition;
-                }
-            }
-            else
-            {
-                BsJsInterop.StopDrag(bSplitter.bsbSettings.ID);
+                bSplitter.PreviousPosition = (int)e.ClientX;
+                bSplitter.PreviousPosition2 = (int)e.ClientY;
             }
         }
 
-        [JSInvokable]
-        public void InvokePointerDownFromJS(int x, int y)
+
+        private void OnPointerMove(UIPointerEventArgs e)
         {
-            if (bsSettings.VerticalOrHorizontal)
-            {
-                bSplitter.PreviousPosition = y;
-                bSplitter.PreviousPosition2 = x;
-            }
-            else
+            if (DragMode)
             {
 
-                bSplitter.PreviousPosition = x;
-                bSplitter.PreviousPosition2 = y;
+
+                if (e.Buttons == 1)
+                {
+
+                    int NewPosition = 0;
+                    int NewPosition2 = 0;
+
+                    if (bsSettings.VerticalOrHorizontal)
+                    {
+                        NewPosition = (int)e.ClientY;
+                        NewPosition2 = (int)e.ClientX;
+                    }
+                    else
+                    {
+                        NewPosition = (int)e.ClientX;
+                        NewPosition2 = (int)e.ClientY;
+                    }
+
+
+                    if (Math.Abs(bSplitter.PreviousPosition2 - NewPosition2) < 100)
+                    {
+                        if (bSplitter.PreviousPosition != NewPosition)
+                        {
+
+                            OnPositionChange?.Invoke(bsSettings.VerticalOrHorizontal, bsSettings.index, NewPosition - bSplitter.PreviousPosition);
+
+
+                            bSplitter.PreviousPosition = NewPosition;
+                        }
+                    }
+                    //else
+                    //{
+                    //    //BsJsInterop.StopDrag(bSplitter.bsbSettings.ID);
+                    //}
+                }
             }
-       
+        }
+
+
+
+        private void OnPointerUp(UIPointerEventArgs e)
+        {
+            BsJsInterop.releasePointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
+            DragMode = false;
         }
 
 
         public void Dispose()
         {
-            BsJsInterop.UnHandleDrag(bSplitter.bsbSettings.ID);
+          
         }
-
-
 
         public void SetColor(string c)
         {

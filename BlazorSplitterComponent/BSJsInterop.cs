@@ -9,35 +9,23 @@ namespace BlazorSplitterComponent
     internal static class BsJsInterop
     {
 
-        internal static IJSRuntime jsRuntime;
-
-        internal static Task<bool> Alert(string msg)
+        internal static Task<bool> Alert(IJSRuntime jsRuntime, string msg)
         {
 
             return jsRuntime.InvokeAsync<bool>(
                 "BsJsFunctions.alertmsg", msg);
         }
-        internal static Task<bool> HandleDrag(string elementID, DotNetObjectRef dotnetHelper)
+
+        internal static Task<bool> SetPointerCapture(IJSRuntime jsRuntime, string elementID, long pointerID)
         {
-
             return jsRuntime.InvokeAsync<bool>(
-                "BsJsFunctions.handleDrag", elementID, dotnetHelper);
+                "BsJsFunctions.setPCapture", elementID, pointerID);
         }
-
-        internal static Task<bool> UnHandleDrag(string elementID)
+        internal static Task<bool> releasePointerCapture(IJSRuntime jsRuntime, string elementID, long pointerID)
         {
-
             return jsRuntime.InvokeAsync<bool>(
-                "BsJsFunctions.unHandleDrag", elementID);
+                "BsJsFunctions.releasePCapture", elementID, pointerID);
         }
-
-        internal static Task<bool> StopDrag(string elementID)
-        {
-
-            return jsRuntime.InvokeAsync<bool>(
-                "BsJsFunctions.stopDrag", elementID);
-        }
-
 
     }
 }
