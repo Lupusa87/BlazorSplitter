@@ -1,10 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
+  
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>true</IsPackable>
     <LangVersion>7.3</LangVersion>
     <!--<BlazorLinkOnBuild>false</BlazorLinkOnBuild>-->
+    <OutputType>Library</OutputType>
+    <PackageTags>Blazor</PackageTags>
+    <Description>This package contains splitter for blazor.</Description>
+    <RepositoryUrl>https://github.com/Lupusa87/BlazorSplitter</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
+    <PackageReleaseNotes>First release 3/1/2019
+Release 2 3/7/2019 update to 0.9.0
+</PackageReleaseNotes>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>Lupusa</Authors>
+    <Version>1.0.1</Version>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://lupblazorsplitter.z20.web.core.windows.net/</PackageProjectUrl>
   </PropertyGroup>
 
 
@@ -17,8 +32,8 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview-19075-0444" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Build" Version="3.0.0-preview-19075-0444" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview3-19153-02" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Build" Version="3.0.0-preview3-19153-02" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

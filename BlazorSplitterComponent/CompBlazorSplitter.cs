@@ -11,6 +11,9 @@ namespace BlazorSplitterComponent
 
     public class CompBlazorSplitter : ComponentBase, IDisposable
     {
+        [Inject]
+        private IJSRuntime jsRuntimeCurrent { get; set; }
+
         [Parameter]
         protected BsSettings bsSettings { get; set; }
 
@@ -25,6 +28,9 @@ namespace BlazorSplitterComponent
 
         protected override void OnInit()
         {
+
+            BsJsInterop.jsRuntime = jsRuntimeCurrent;
+
             bSplitter.bsbSettings = bsSettings;
             
 
