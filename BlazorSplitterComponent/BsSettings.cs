@@ -12,6 +12,8 @@ namespace BlazorSplitterComponent
 
         public bool VerticalOrHorizontal { get; set; } = false;
 
+        public bool IsDiagonal { get; set; } = false;
+
         public double width { get; set; } = 5;
         public double height { get; set; } = 30;
 
@@ -46,16 +48,22 @@ namespace BlazorSplitterComponent
             //sb1.Append("background-color:red;");
             sb1.Append("background-color:" + BgColor + ";");
 
-
-            if (VerticalOrHorizontal)
+            if (IsDiagonal)
             {
-                sb1.Append("cursor:s-resize;");
-                //sb1.Append("cursor:col-resize;");
+                sb1.Append("cursor:nwse-resize;");
             }
             else
             {
-                sb1.Append("cursor:w-resize;");
-                //sb1.Append("cursor:col-resize;");
+                if (VerticalOrHorizontal)
+                {
+                    sb1.Append("cursor:s-resize;");
+                    //sb1.Append("cursor:col-resize;");
+                }
+                else
+                {
+                    sb1.Append("cursor:w-resize;");
+                    //sb1.Append("cursor:col-resize;");
+                }
             }
 
 

@@ -20,6 +20,15 @@ namespace BlazorSplitterComponent
         [Parameter]
         public Action<bool, int, int> OnPositionChange { get; set; }
 
+        [Parameter]
+        public Action<int, int,int> OnDiagonalPositionChange { get; set; }
+
+        [Parameter]
+        public Action<int, int, int> OnDragStart { get; set; }
+
+
+        [Parameter]
+        public Action<int, int, int> OnDragEnd { get; set; }
 
         private BSplitter bSplitter { get; set; } = new BSplitter();
 
@@ -67,17 +76,29 @@ namespace BlazorSplitterComponent
             BsJsInterop.SetPointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
             DragMode = true;
 
-            if (bsSettings.VerticalOrHorizontal)
+            if (bsSettings.IsDiagonal)
             {
-                bSplitter.PreviousPosition = (int)e.ClientY;
-                bSplitter.PreviousPosition2 = (int)e.ClientX;
+                bSplitter.PreviousPosition = (int)e.ClientX;
+                bSplitter.PreviousPosition2 = (int)e.ClientY;
+                
             }
             else
             {
+                if (bsSettings.VerticalOrHorizontal)
+                {
+                    bSplitter.PreviousPosition = (int)e.ClientY;
+                    bSplitter.PreviousPosition2 = (int)e.ClientX;
+                }
+                else
+                {
 
-                bSplitter.PreviousPosition = (int)e.ClientX;
-                bSplitter.PreviousPosition2 = (int)e.ClientY;
+                    bSplitter.PreviousPosition = (int)e.ClientX;
+                    bSplitter.PreviousPosition2 = (int)e.ClientY;
+                }
             }
+
+
+            OnDragStart?.Invoke(bSplitter.bsbSettings.index, (int)e.ClientX, (int)e.ClientY);
         }
 
 
@@ -93,33 +114,54 @@ namespace BlazorSplitterComponent
                     int NewPosition = 0;
                     int NewPosition2 = 0;
 
-                    if (bsSettings.VerticalOrHorizontal)
-                    {
-                        NewPosition = (int)e.ClientY;
-                        NewPosition2 = (int)e.ClientX;
-                    }
-                    else
+
+                    if (bsSettings.IsDiagonal)
                     {
                         NewPosition = (int)e.ClientX;
                         NewPosition2 = (int)e.ClientY;
+                       
+                        
+                            if (bSplitter.PreviousPosition != NewPosition || bSplitter.PreviousPosition2 != NewPosition2)
+                            {
+
+                                OnDiagonalPositionChange?.Invoke(bsSettings.index, NewPosition - bSplitter.PreviousPosition, NewPosition2 - bSplitter.PreviousPosition2);
+
+
+                                bSplitter.PreviousPosition = NewPosition;
+                                bSplitter.PreviousPosition2 = NewPosition2;
+                            }
+                        
                     }
-
-
-                    if (Math.Abs(bSplitter.PreviousPosition2 - NewPosition2) < 100)
+                    else
                     {
-                        if (bSplitter.PreviousPosition != NewPosition)
+                        if (bsSettings.VerticalOrHorizontal)
                         {
-
-                            OnPositionChange?.Invoke(bsSettings.VerticalOrHorizontal, bsSettings.index, NewPosition - bSplitter.PreviousPosition);
-
-
-                            bSplitter.PreviousPosition = NewPosition;
+                            NewPosition = (int)e.ClientY;
+                            NewPosition2 = (int)e.ClientX;
                         }
+                        else
+                        {
+                            NewPosition = (int)e.ClientX;
+                            NewPosition2 = (int)e.ClientY;
+                        }
+
+
+                        if (Math.Abs(bSplitter.PreviousPosition2 - NewPosition2) < 100)
+                        {
+                            if (bSplitter.PreviousPosition != NewPosition)
+                            {
+
+                                OnPositionChange?.Invoke(bsSettings.VerticalOrHorizontal, bsSettings.index, NewPosition - bSplitter.PreviousPosition);
+
+
+                                bSplitter.PreviousPosition = NewPosition;
+                            }
+                        }
+                        //else
+                        //{
+                        //    //BsJsInterop.StopDrag(bSplitter.bsbSettings.ID);
+                        //}
                     }
-                    //else
-                    //{
-                    //    //BsJsInterop.StopDrag(bSplitter.bsbSettings.ID);
-                    //}
                 }
             }
         }
@@ -130,6 +172,8 @@ namespace BlazorSplitterComponent
         {
             BsJsInterop.releasePointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
             DragMode = false;
+
+            OnDragEnd?.Invoke(bSplitter.bsbSettings.index, (int)e.ClientX, (int)e.ClientY);
         }
 
 

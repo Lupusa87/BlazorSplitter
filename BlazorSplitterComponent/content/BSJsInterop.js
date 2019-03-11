@@ -14,8 +14,9 @@
         }
     },
     releasePCapture: function (el, p) {
-
+       
         if (document.getElementById(el) !== null) {
+           
             document.getElementById(el).releasePointerCapture(p);
             return true;
         }
