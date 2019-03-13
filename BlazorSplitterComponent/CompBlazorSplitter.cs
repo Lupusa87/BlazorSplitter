@@ -34,8 +34,9 @@ namespace BlazorSplitterComponent
 
         private bool DragMode = false;
 
-
-        private bool EnableRender = true;
+        [Parameter]
+        public bool EnableRender { get; set; } =  true;
+       
 
         protected override void OnInit()
         {
@@ -47,6 +48,7 @@ namespace BlazorSplitterComponent
 
             base.OnInit();
         }
+
 
         protected override bool ShouldRender()
         {
@@ -62,23 +64,31 @@ namespace BlazorSplitterComponent
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            base.BuildRenderTree(builder);
+            if (EnableRender)
+            {
+                
+                base.BuildRenderTree(builder);
 
-            int k = 0;
-            builder.OpenElement(k++, "div");
-            builder.AddAttribute(k++, "id", bSplitter.bsbSettings.ID);
-            builder.AddAttribute(k++, "style", bSplitter.bsbSettings.GetStyle());
+                int k = 0;
+                builder.OpenElement(k++, "div");
+                builder.AddAttribute(k++, "id", bSplitter.bsbSettings.ID);
+                builder.AddAttribute(k++, "style", bSplitter.bsbSettings.GetStyle());
 
-            builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
-            builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
-            builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
+                builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
+                builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
+                builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
 
-            builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
+                builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
 
 
-            builder.CloseElement();
+                builder.CloseElement();
 
-            EnableRender = false;
+
+                
+                EnableRender = false;
+            }
+
+            
         }
 
 
@@ -196,6 +206,7 @@ namespace BlazorSplitterComponent
         public void SetColor(string c)
         {
             bSplitter.bsbSettings.BgColor = c;
+            EnableRender = true;
             StateHasChanged();
         }
     }
