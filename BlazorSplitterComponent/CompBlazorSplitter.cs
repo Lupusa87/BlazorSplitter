@@ -34,6 +34,9 @@ namespace BlazorSplitterComponent
 
         private bool DragMode = false;
 
+
+        private bool EnableRender = true;
+
         protected override void OnInit()
         {
             bSplitter.bsbSettings = bsSettings;
@@ -45,14 +48,22 @@ namespace BlazorSplitterComponent
             base.OnInit();
         }
 
+        protected override bool ShouldRender()
+        {
+            return EnableRender;
+        }
+
 
         private void BSplitter_PropertyChanged()
         {
+            EnableRender = true;
             StateHasChanged();
         }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            base.BuildRenderTree(builder);
+
             int k = 0;
             builder.OpenElement(k++, "div");
             builder.AddAttribute(k++, "id", bSplitter.bsbSettings.ID);
@@ -67,7 +78,7 @@ namespace BlazorSplitterComponent
 
             builder.CloseElement();
 
-            base.BuildRenderTree(builder);
+            EnableRender = false;
         }
 
 
