@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace BlazorSplitterComponent
         private IJSRuntime jsRuntimeCurrent { get; set; }
 
         [Parameter]
-        protected BsSettings bsSettings { get; set; }
+        public BsSettings bsSettings { get; set; }
 
         [Parameter]
         public Action<bool, int, int> OnPositionChange { get; set; }
@@ -38,7 +39,7 @@ namespace BlazorSplitterComponent
         public bool EnableRender { get; set; } =  true;
        
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             bSplitter.bsbSettings = bsSettings;
 
@@ -46,7 +47,7 @@ namespace BlazorSplitterComponent
 
             DragMode = false;
 
-            base.OnInit();
+            base.OnInitialized();
         }
 
 
@@ -74,11 +75,12 @@ namespace BlazorSplitterComponent
                 builder.AddAttribute(k++, "id", bSplitter.bsbSettings.ID);
                 builder.AddAttribute(k++, "style", bSplitter.bsbSettings.GetStyle());
 
-                builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerDown));
-                builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerMove));
-                builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<UIPointerEventArgs>(this, OnPointerUp));
+                builder.AddAttribute(k++, "onpointerdown", EventCallback.Factory.Create<PointerEventArgs>(this, OnPointerDown));
+                builder.AddAttribute(k++, "onpointermove", EventCallback.Factory.Create<PointerEventArgs>(this, OnPointerMove));
+                builder.AddAttribute(k++, "onpointerup", EventCallback.Factory.Create<PointerEventArgs>(this, OnPointerUp));
 
-                builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<UIMouseEventArgs>(this, "return false;")); //event.preventDefault()
+                builder.AddEventPreventDefaultAttribute(k++, "onmousemove", true);
+                //builder.AddAttribute(k++, "onmousemove", EventCallback.Factory.Create<MouseEventArgs>(this, "return false;")); //event.preventDefault()
 
 
                 builder.CloseElement();
@@ -92,9 +94,9 @@ namespace BlazorSplitterComponent
         }
 
 
-        private void OnPointerDown(UIPointerEventArgs e)
+        private void OnPointerDown(PointerEventArgs e)
         {
-            BsJsInterop.SetPointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
+            BSplitterCJsInterop.SetPointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
             DragMode = true;
 
             if (bsSettings.IsDiagonal)
@@ -123,7 +125,7 @@ namespace BlazorSplitterComponent
         }
 
 
-        private void OnPointerMove(UIPointerEventArgs e)
+        private void OnPointerMove(PointerEventArgs e)
         {
             if (DragMode)
             {
@@ -189,9 +191,9 @@ namespace BlazorSplitterComponent
 
 
 
-        private void OnPointerUp(UIPointerEventArgs e)
+        private void OnPointerUp(PointerEventArgs e)
         {
-            BsJsInterop.releasePointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
+            BSplitterCJsInterop.releasePointerCapture(jsRuntimeCurrent, bSplitter.bsbSettings.ID, e.PointerId);
             DragMode = false;
 
             OnDragEnd?.Invoke(bSplitter.bsbSettings.index, (int)e.ClientX, (int)e.ClientY);

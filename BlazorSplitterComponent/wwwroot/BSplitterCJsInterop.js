@@ -1,4 +1,4 @@
-﻿window.BsJsFunctions = {
+﻿window.BSplitterCJsFunctions = {
     alertmsg: function (m) {
         alert(m);
         return true;

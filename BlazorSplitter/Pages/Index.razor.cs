@@ -1,5 +1,6 @@
 ﻿using BlazorSplitterComponent;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace BlazorSplitter.Pages
 {
-    public class Index_Logic:ComponentBase
+    public partial class Index
     {
-
+        [Inject]
+        private IJSRuntime jsRuntime { get; set; }
 
         public List<CompBlazorSplitter> CompBlazorSplitters_List_Cols = new List<CompBlazorSplitter>();
 
@@ -35,8 +37,10 @@ namespace BlazorSplitter.Pages
 
         public string[,] Values_Matrix = new string[5, 5];
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
+            BSplitterCJsInterop.jsRuntime = jsRuntime;
+
             for (int i = 0; i < 6; i++)
             {
                 CompBlazorSplitters_List_Cols.Add(new CompBlazorSplitter());
@@ -78,7 +82,7 @@ namespace BlazorSplitter.Pages
             }
                        
 
-            base.OnInit();
+            base.OnInitialized();
         }
 
 
