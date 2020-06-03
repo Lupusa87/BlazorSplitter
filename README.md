@@ -15,4 +15,13 @@ Please send [email](mailto:VakhtangiAbashidze@gmail.com) if you consider to **hi
 
 This is blazor Splitter prototype.
 
+
+Component is available on [nuget](https://www.nuget.org/packages/BlazorSplitterComponent/)
+
+After installing package please add bellow script to your index.html
+
+```
+<script src="_content/BlazorSplitterComponent/BSplitterCJsInterop.js"></script>
+```
+
 demo - https://lupblazordemos.z13.web.core.windows.net/PageSplitter
