@@ -14,9 +14,9 @@
     <PackageProjectUrl>https://lupblazordemos.z13.web.core.windows.net/PageSplitter</PackageProjectUrl>
     <PackageTags>Blazor</PackageTags>
     <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
-    <Version>1.0.6</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
+    <Version>1.0.7</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   
@@ -30,8 +30,8 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.4.20257.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.4.20257.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.5.20279.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.5.20279.2" />
   </ItemGroup>
 
 
